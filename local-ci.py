@@ -1,9 +1,6 @@
 #!/usr/bin/env python3.5
 
-#import yaml,os
 import yaml,subprocess,sys
-
-my_stage = 'test'
         
 def print_stages(data):
     print("Stages: [%s]" % ', '.join(map(str,data['stages'])))
@@ -17,12 +14,9 @@ def get_steps(data, stage):
     return steps
 
 def run_step(step):
-    #    os.system('gitlab-runner exec docker "%s"' % step)
     return subprocess.run(['gitlab-runner', "exec", "docker", "%s" % step])
 
-
 ## Main
-
 
 with open('.gitlab-ci.yml') as f:
     dataMap = yaml.safe_load(f)
@@ -38,7 +32,6 @@ with open('.gitlab-ci.yml') as f:
             print("No stage named " + stage + " was found")
             print_stages(dataMap)
             sys.exit(1)
-
 
         for step in get_steps(dataMap, stage):
             print('\033[95mJob name: ' + step + '\033[0m\n')
